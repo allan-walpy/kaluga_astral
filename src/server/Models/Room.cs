@@ -13,6 +13,9 @@ namespace Hostel.Server.Model
         public int Id;
 
         [Required]
+        public int Floor;
+
+        [Required]
         public int Number;
 
         public int Capacity;

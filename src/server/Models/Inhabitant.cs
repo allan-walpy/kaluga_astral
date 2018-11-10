@@ -14,7 +14,7 @@ namespace Hostel.Server.Model
         [Required]
         public Customer Customer;
 
-        [Required]
+        [Required][ForeignKey("Number")]
         public Room Room;
 
         [Required]
