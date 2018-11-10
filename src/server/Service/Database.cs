@@ -1,4 +1,5 @@
 using System;
+using Microsoft.EntityFrameworkCore;
 
 using Hostel.Server.Model;
 
@@ -7,11 +8,24 @@ namespace Hostel.Server.Service
     public class DatabaseService
     {
 
-        public ApplicationContext Context { get; }
+        private String _connection;
 
-        public DatabaseService(ApplicationContext context)
+        public ApplicationContext Context
         {
-            this.Context = context;
+            get
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+
+                var options = optionsBuilder
+                    .UseMySQL(this._connection)
+                    .Options;
+                return new ApplicationContext(options);
+            }
+        }
+
+        public DatabaseService(String connection)
+        {
+            this._connection = connection;
         }
 
     }
