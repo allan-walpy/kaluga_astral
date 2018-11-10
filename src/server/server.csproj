@@ -27,6 +27,14 @@
         <IncludeSource>true</IncludeSource>
     </PropertyGroup>
 
+    <!-- debug conditions; -->
+    <PropertyGroup Condition="$(Configuration)=='Debug'">
+        <!-- 1591 - not documented xml member; -->
+        <!-- 1573 - not documented xml parametr; -->
+        <NoWarn>1591;1573;</NoWarn>
+        <DefineConstants>DEBUG;</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
         <Folder Include="wwwroot\" />
     </ItemGroup>
