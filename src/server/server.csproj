@@ -4,6 +4,21 @@
         <TargetFramework>netcoreapp2.1</TargetFramework>
     </PropertyGroup>
 
+    <!-- package info -->
+    <PropertyGroup>
+        <AssemblyTitle>Hostel.Server</AssemblyTitle>
+        <PackageId>Hostel.Server</PackageId>
+        <Version>0.1.0</Version>
+        <Authors>allan_walpy</Authors>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <Description>server-side of hostel administration tool</Description>
+        <PackageProjectUrl>https://github.com/allan-walpy/kaluga_astral/</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/allan-walpy/kaluga_astral/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/allan-walpy/kaluga_astral</RepositoryUrl>
+    </PropertyGroup>
+
     <!-- compilation config; -->
     <PropertyGroup>
         <OutputPath>../../out/$(Configuration)/</OutputPath>
