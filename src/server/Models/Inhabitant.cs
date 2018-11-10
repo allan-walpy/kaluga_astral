@@ -1,23 +1,26 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hostel.Server.Model
 {
 
-    [Table("Customers")]
-    public class Customer
+    [Table("Inhabitants")]
+    public class Inhabitant
     {
-
         [Key]
         public int Id;
 
         [Required]
-        public string FirstName;
+        public Customer Customer;
 
         [Required]
-        public string SecondName;
+        public Room Room;
 
-        public string ThirdName;
+        [Required]
+        public DateTime CheckIn;
+
+        public DateTime CheckOut;
 
     }
 

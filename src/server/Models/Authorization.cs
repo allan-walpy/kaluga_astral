@@ -5,7 +5,7 @@ namespace Hostel.Server.Model
 {
 
     [Table("Authorization")]
-    public class AuthKey
+    public class Authorization
     {
 
         [Key]

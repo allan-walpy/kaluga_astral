@@ -1,7 +1,6 @@
-
-namespace Hostel.Server
+namespace Hostel.Server.Model
 {
-    public enum RoomType
+    public enum RoomCategory
     {
         Standart,
         HalfLuxary,

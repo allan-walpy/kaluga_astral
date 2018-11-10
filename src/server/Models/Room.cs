@@ -1,14 +1,25 @@
-namespace Hostel.Server
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Hostel.Server.Model
 {
 
+    [Table("Rooms")]
     public class Room
     {
 
+
+        [Key]
+        public int Id;
+
+        [Required]
+        public int Number;
+
         public int Capacity;
 
-        public RoomType Type;
+        public RoomCategory Category;
 
-        public bool IsAvailable;
+        public Inhabitant Inhabitant;
 
     }
 
