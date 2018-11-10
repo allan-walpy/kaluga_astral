@@ -10,19 +10,16 @@ namespace Hostel.Server.Model
 
 
         [Key]
-        public int Id;
+        public int Id { get; set; }
 
         [Required]
-        public int Floor;
+        public int Number { get; set; }
 
-        [Required]
-        public int Number;
+        public int Capacity { get; set; }
 
-        public int Capacity;
+        public RoomCategory Category { get; set; }
 
-        public RoomCategory Category;
-
-        public Inhabitant Inhabitant;
+        public Inhabitant Inhabitant { get; set; }
 
     }
 

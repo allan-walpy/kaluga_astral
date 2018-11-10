@@ -9,15 +9,15 @@ namespace Hostel.Server.Model
     {
 
         [Key]
-        public int Id;
+        public int Id { get; set; }
 
         [Required]
-        public string FirstName;
+        public string FirstName { get; set; }
 
         [Required]
-        public string SecondName;
+        public string SecondName { get; set; }
 
-        public string ThirdName;
+        public string ThirdName { get; set; }
 
     }
 

@@ -1,25 +1,19 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 
-using Hostel.Server.Model;
-
-namespace Hostel.Server
+namespace Hostel.Server.Model
 {
     public class ApplicationContext : DbContext
     {
         public DbSet<Inhabitant> Inhabitants { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<Authorization> AuthorizationKeys { get; set; }
+        public DbSet<Identity> Identity { get; set; }
 
-        public ApplicationContext()
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
+            : base(options)
         {
             Database.EnsureCreated();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=hosteldb;Trusted_Connection=True;");
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,12 +25,19 @@ namespace Hostel.Server
                 .HasIndex(room => room.Number)
                 .IsUnique();
 
+            modelBuilder.Entity<Inhabitant>()
+                .HasOne(i => i.Room)
+                .WithOne(r => r.Inhabitant)
+                .HasForeignKey<Room>(r => r.Number);
+
             // Each customer has to have differenet full names to seperate the, apart;
             modelBuilder.Entity<Customer>()
-                .HasIndex(customer => new {
+                .HasIndex(customer => new
+                {
                     customer.FirstName,
                     customer.SecondName,
-                    customer.ThirdName})
+                    customer.ThirdName
+                })
                 .IsUnique();
 
             // on checkout, room.customer set to null;

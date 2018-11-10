@@ -9,18 +9,19 @@ namespace Hostel.Server.Model
     public class Inhabitant
     {
         [Key]
-        public int Id;
+        public int Id { get; set; }
 
         [Required]
-        public Customer Customer;
-
-        [Required][ForeignKey("Number")]
-        public Room Room;
+        public Customer Customer { get; set; }
 
         [Required]
-        public DateTime CheckIn;
+        public Room Room { get; set; }
+        public int RoomId { get; set; }
 
-        public DateTime CheckOut;
+        [Required]
+        public DateTime CheckIn { get; set; }
+
+        public DateTime CheckOut { get; set; }
 
     }
 
