@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Hostel.Server.Middleware;
+
 namespace Hostel.Server
 {
     public class Startup
@@ -25,7 +27,8 @@ namespace Hostel.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.UseDatabaseProvider();
+            services.UseConfigurationProvider();
+            services.UseDatabaseProvider(Program.Config);
 
             services.AddMvc()
                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
