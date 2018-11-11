@@ -1,7 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-using Hostel.Server.Model;
+using Hostel.Server.Models;
 
 namespace Hostel.Server.Service
 {

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace Hostel.Server.Model
+namespace Hostel.Server.Models
 {
 
     [Table("Identities")]

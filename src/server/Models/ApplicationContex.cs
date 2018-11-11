@@ -1,7 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace Hostel.Server.Model
+namespace Hostel.Server.Models
 {
     public class ApplicationContext : DbContext
     {

@@ -2,7 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-using Hostel.Server.Model;
+using Hostel.Server.Models;
 
 namespace Hostel.Server.Service
 {

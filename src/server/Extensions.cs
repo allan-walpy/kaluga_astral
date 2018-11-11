@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
-using Hostel.Server.Model;
+using Hostel.Server.Models;
 using Hostel.Server.Service;
 
 namespace Hostel.Server

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hostel.Server.Model
+namespace Hostel.Server.Models
 {
 
     [Table("Customers")]

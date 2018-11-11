@@ -1,4 +1,4 @@
-namespace Hostel.Server.Model
+namespace Hostel.Server.Models
 {
 
     public enum RoomCategory
