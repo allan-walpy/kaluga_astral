@@ -16,7 +16,6 @@ namespace Hostel.Server.Model
 
         [Required]
         public Room Room { get; set; }
-        public int RoomId { get; set; }
 
         [Required]
         public DateTime CheckIn { get; set; }

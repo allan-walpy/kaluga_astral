@@ -20,34 +20,23 @@ namespace Hostel.Server.Model
         {
             base.OnModelCreating(modelBuilder);
 
-            // Each room has unique number;
-            modelBuilder.Entity<Room>()
-                .HasIndex(room => room.Number)
-                .IsUnique();
-
-            modelBuilder.Entity<Inhabitant>()
-                .HasOne(i => i.Room)
-                .WithOne(r => r.Inhabitant)
-                .HasForeignKey<Room>(r => r.Number);
-
-            // Each customer has to have differenet full names to seperate the, apart;
             modelBuilder.Entity<Customer>()
-                .HasIndex(customer => new
+                .HasIndex(c => new
                 {
-                    customer.FirstName,
-                    customer.SecondName,
-                    customer.ThirdName
-                })
-                .IsUnique();
+                    c.FirstName,
+                    c.SecondName,
+                    c.ThirdName
+                }).IsUnique();
 
-            // on checkout, room.customer set to null;
             modelBuilder.Entity<Inhabitant>()
                 .HasOne(i => i.Room)
                 .WithOne(r => r.Inhabitant)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey<Room>(r => r.InhabitantId);
 
             modelBuilder.Entity<Inhabitant>()
-                .HasOne(i => i.Customer);
+                .HasOne(i => i.Customer)
+                .WithOne(c => c.Inhabitant)
+                .HasForeignKey<Customer>(c => c.InhabitantId);
         }
     }
 }
