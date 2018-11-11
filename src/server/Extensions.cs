@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
 using Hostel.Server.Models;
-using Hostel.Server.Service;
+using Hostel.Server.Services;
 
 namespace Hostel.Server
 {

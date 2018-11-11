@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 using Hostel.Server.Models;
 
-namespace Hostel.Server.Service
+namespace Hostel.Server.Services
 {
     public class ConfigurationService
     {
