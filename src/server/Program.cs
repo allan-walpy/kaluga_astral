@@ -39,30 +39,3 @@ namespace Hostel.Server
 
     }
 }
-
-
-/*
-        public static void Main(string[] args)
-        {
-            // получаем строку подключения
-            string connectionString = config.GetConnectionString("DefaultConnection");
-
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-            var options = optionsBuilder
-                .UseSqlServer(connectionString)
-                .Options;
-
-            using (ApplicationContext db = new ApplicationContext(options))
-            {
-                var users = db.Users.ToList();
-                foreach (User u in users)
-                {
-                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
-                }
-            }
-            Console.Read();
-        }
-    }
-}
-
- */

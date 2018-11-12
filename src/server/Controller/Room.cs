@@ -11,24 +11,24 @@ using Newtonsoft.Json;
 namespace Hostel.Server.Controllers
 {
 
-    [Route("customer/")]
+    [Route("room/")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class RoomController : ControllerBase
     {
 
         private DatabaseService DbService { get; }
 
-        public CustomerController(DatabaseService service)
+        public RoomController(DatabaseService service)
         {
             this.DbService = service;
         }
 
-        private Customer GetById(int id)
+        private Room GetById(int id)
         {
-            Customer result;
+            Room result;
             using (var db = this.DbService.Context)
             {
-                result = db.Customers.Where(c => c.Id == id).FirstOrDefault();
+                result = db.Rooms.Where(c => c.Number == id).FirstOrDefault();
             }
             return result;
         }
@@ -38,12 +38,12 @@ namespace Hostel.Server.Controllers
         public IActionResult RequestAdd()
         {
 #if DEBUG
-            Console.WriteLine("request:customer/add/");
+            Console.WriteLine("request:room/add/");
 #endif
 
-            Customer customer = JsonConvert.DeserializeObject<Customer>(HttpContext.Request.Body.Stringify());
+            Room room = JsonConvert.DeserializeObject<Room>(HttpContext.Request.Body.Stringify());
 
-            if (customer == null)
+            if (room == null)
             {
                 HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return new EmptyResult();
@@ -51,11 +51,11 @@ namespace Hostel.Server.Controllers
 
             using (var db = this.DbService.Context)
             {
-                db.Customers.Add(customer);
+                db.Rooms.Add(room);
                 db.SaveChanges();
             }
             HttpContext.Response.StatusCode = StatusCodes.Status200OK;
-            return new JsonResult(customer);
+            return new JsonResult(room);
         }
 
         [HttpGet("remove/{id:int}")]
@@ -64,12 +64,12 @@ namespace Hostel.Server.Controllers
         public IActionResult RequestRemove(int id)
         {
 #if DEBUG
-            Console.WriteLine("request:customer/remove/{id:int}");
+            Console.WriteLine("request:room/remove/{id:int}");
 #endif
 
-            var customer = this.GetById(id);
+            Room room = this.GetById(id);
 
-            if (customer == null)
+            if (room == null)
             {
                 HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 return new EmptyResult();
@@ -77,7 +77,7 @@ namespace Hostel.Server.Controllers
 
             using (var db = this.DbService.Context)
             {
-                db.Customers.Remove(customer);
+                db.Rooms.Remove(room);
                 db.SaveChanges();
             }
 
@@ -90,10 +90,10 @@ namespace Hostel.Server.Controllers
         public IActionResult RequestGet(int id)
         {
 #if DEBUG
-            Console.WriteLine("request:customer/get/{id:int}");
+            Console.WriteLine("request:room/get/{id:int}");
 #endif
 
-            Customer result = this.GetById(id);
+            Room result = this.GetById(id);
 
             if (result == null)
             {
@@ -111,9 +111,9 @@ namespace Hostel.Server.Controllers
         public IActionResult RequestUpdate(int id)
         {
 #if DEBUG
-            Console.WriteLine("request:customer/update/{id:int}");
+            Console.WriteLine("request:room/update/{id:int}");
 #endif
-            Customer newData = JsonConvert.DeserializeObject<Customer>(HttpContext.Request.Body.Stringify());
+            Room newData = JsonConvert.DeserializeObject<Room>(HttpContext.Request.Body.Stringify());
 
             if (newData == null)
             {
@@ -121,12 +121,12 @@ namespace Hostel.Server.Controllers
                 return new EmptyResult();
             }
 
-            newData.Id = id;
+            newData.Number = id;
             // TODO: set InhabitantId if none present;
 
             using (var db = this.DbService.Context)
             {
-                db.Customers.Update(newData);
+                db.Rooms.Update(newData);
                 db.SaveChanges();
             }
 
@@ -137,7 +137,7 @@ namespace Hostel.Server.Controllers
         [HttpGet("")]
         public IActionResult RequestGetAll()
         {
-            List<Customer> result = this.DbService.Context.Customers.ToList();
+            List<Room> result = this.DbService.Context.Rooms.ToList();
             HttpContext.Response.StatusCode = StatusCodes.Status200OK;
             return new JsonResult(result);
         }
