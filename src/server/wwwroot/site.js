@@ -1,7 +1,4 @@
 
-
-
-
 /* thnx to https://github.com/taniarascia/sandbox; */
 var request = new XMLHttpRequest();
 
@@ -26,8 +23,8 @@ function showTable(newData) {
     document.getElementById("content").innerHTML = content;
 }
 
-function makeRoomTable(data, isShowId = true) {
-    var output = "<table><tr>";
+function makeRoomTable(data, isShowId = true, isFilter = true) {
+    var output = "<table><tr class='table-header'>";
     if (isShowId)
         output += cell("Id", "onClickSortId")
     output += cell("Number", "onClickSortNumber")
@@ -51,10 +48,10 @@ function makeRoomTable(data, isShowId = true) {
     return output;
 }
 
-function cell(value, onClick) {
-    if (onClick !== null)
-        return `<td onClick="${onClick}()">${value}</td>`;
-    return `<td>${value}</td>`;
+function cell(value, onClick, isHeader) {
+    var tag = isHeader ? "th": "td";
+    var onClick = onClick ? ` onClick="${onClick}()"` : "";
+    return `<${tag}${onClick}>${value}</${tag}>`;
 }
 
 function toCategory(number) {
