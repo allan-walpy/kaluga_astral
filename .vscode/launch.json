@@ -5,7 +5,7 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": "run://web/debug",
+            "name": "run://debug",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -14,21 +14,7 @@
             "args": [],
             "cwd": "${workspaceFolder}/src/server",
             "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart",
-            "launchBrowser": {
-                "enabled": true,
-                "args": "${auto-detect-url}",
-                "windows": {
-                    "command": "cmd.exe",
-                    "args": "/C start ${auto-detect-url}"
-                },
-                "osx": {
-                    "command": "open"
-                },
-                "linux": {
-                    "command": "xdg-open"
-                }
-            },
+            "internalConsoleOptions": "neverOpen",
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
