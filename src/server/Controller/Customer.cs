@@ -8,10 +8,10 @@ using Hostel.Server.Models;
 using Hostel.Server.Services;
 using Newtonsoft.Json;
 
-namespace Hostel.Server.Controller
+namespace Hostel.Server.Controllers
 {
 
-    [Route("customer/[action]")]
+    [Route("customer/")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -57,6 +57,10 @@ namespace Hostel.Server.Controller
         [HttpPost("add/")]
         public IActionResult RequestAdd()
         {
+#if DEBUG
+            Console.WriteLine("request:customer/add");
+#endif
+
             Customer customer = JsonConvert.DeserializeObject<Customer>(HttpContext.Request.Body.Stringify());
 
             using (var db = this.DbService.Context)
@@ -72,6 +76,9 @@ namespace Hostel.Server.Controller
         [HttpPost("remove/{id:int}")]
         public IActionResult RequestRemove(int id)
         {
+#if DEBUG
+            Console.WriteLine("request:customer/remove/{id:int}");
+#endif
 
             var customer = this.GetById(id);
 
@@ -95,6 +102,10 @@ namespace Hostel.Server.Controller
         [HttpPost("get/{id:int}")]
         public IActionResult RequestGet(int id)
         {
+#if DEBUG
+            Console.WriteLine("request:customer/get/{id:int}");
+#endif
+
             Customer result = this.GetById(id);
 
             if (result == null)
@@ -112,6 +123,10 @@ namespace Hostel.Server.Controller
         [HttpPost("find/")]
         public IActionResult RequestFind()
         {
+#if DEBUG
+            Console.WriteLine("request:customer/find");
+#endif
+
             Customer customer = JsonConvert.DeserializeObject<Customer>(HttpContext.Request.Body.Stringify());
 
             if (this.IsCustomerNull(customer))
