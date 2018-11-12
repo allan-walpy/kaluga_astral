@@ -135,6 +135,7 @@ namespace Hostel.Server.Controllers
         }
 
         [HttpGet("")]
+        [HttpGet("all/")]
         public IActionResult RequestGetAll()
         {
             List<Room> result = this.DbService.Context.Rooms.ToList();

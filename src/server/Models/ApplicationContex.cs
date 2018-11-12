@@ -15,7 +15,6 @@ namespace Hostel.Server.Models
         {
             Database.EnsureCreated();
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -60,17 +59,17 @@ namespace Hostel.Server.Models
                 .HasOne(i => i.Room)
                 .WithOne(r => r.Inhabitant)
                 .OnDelete(DeleteBehavior.SetNull)
-                .HasForeignKey<Room>(r => r.InhabitantId);
+                .HasForeignKey<Room>(r => r.InhabitantId)
+                .HasPrincipalKey<Inhabitant>(i => i.RoomId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Inhabitant>()
                 .HasOne(i => i.Customer)
                 .WithOne(c => c.Inhabitant)
                 .OnDelete(DeleteBehavior.SetNull)
-                .HasForeignKey<Customer>(c => c.InhabitantId);
-
-            modelBuilder.Entity<Inhabitant>()
-                .Property(i => i.CheckOut)
-                .HasDefaultValue(null);
+                .HasForeignKey<Customer>(c => c.InhabitantId)
+                .HasPrincipalKey<Inhabitant>(i => i.CustomerId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
 
 

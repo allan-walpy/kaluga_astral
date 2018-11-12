@@ -13,14 +13,14 @@ namespace Hostel.Server.Models
 
         [Required]
         public Customer Customer { get; set; }
+        public int CustomerId { get; set; }
 
         [Required]
         public Room Room { get; set; }
+        public int RoomId { get; set; }
 
         [Required]
         public DateTime CheckIn { get; set; }
-
-        public DateTime CheckOut { get; set; }
 
     }
 
