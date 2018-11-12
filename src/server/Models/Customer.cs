@@ -20,6 +20,7 @@ namespace Hostel.Server.Models
         public string ThirdName { get; set; }
 
         public Inhabitant Inhabitant { get; set; }
+
         public int InhabitantId { get; set; }
 
     }

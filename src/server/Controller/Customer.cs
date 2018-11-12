@@ -53,7 +53,6 @@ namespace Hostel.Server.Controllers
                 & (customer.ThirdName == null);
         }
 
-        [HttpGet("add/")]
         [HttpPost("add/")]
         public IActionResult RequestAdd()
         {
@@ -62,6 +61,12 @@ namespace Hostel.Server.Controllers
 #endif
 
             Customer customer = JsonConvert.DeserializeObject<Customer>(HttpContext.Request.Body.Stringify());
+
+            if (customer == null)
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                return new EmptyResult();
+            }
 
             using (var db = this.DbService.Context)
             {

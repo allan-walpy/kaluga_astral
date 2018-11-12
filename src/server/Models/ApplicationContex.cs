@@ -20,6 +20,13 @@ namespace Hostel.Server.Models
         {
             base.OnModelCreating(modelBuilder);
 
+            this.ConfigureInhabitants(ref modelBuilder);
+            this.ConfigureCustomers(ref modelBuilder);
+            this.ConfigureRooms(ref modelBuilder);
+        }
+
+        private void ConfigureCustomers(ref ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Customer>()
                 .HasIndex(c => new
                 {
@@ -28,15 +35,41 @@ namespace Hostel.Server.Models
                     c.ThirdName
                 }).IsUnique();
 
+            modelBuilder.Entity<Customer>()
+                .Property(c => c.ThirdName)
+                .HasDefaultValue(null);
+        }
+
+        private void ConfigureRooms(ref ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Room>()
+                .Property(r => r.Capacity)
+                .HasDefaultValue(1);
+
+            modelBuilder.Entity<Room>()
+                .Property(r => r.Category)
+                .HasDefaultValue(RoomCategory.Standart);
+        }
+
+        private void ConfigureInhabitants(ref ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Inhabitant>()
                 .HasOne(i => i.Room)
                 .WithOne(r => r.Inhabitant)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasForeignKey<Room>(r => r.InhabitantId);
 
             modelBuilder.Entity<Inhabitant>()
                 .HasOne(i => i.Customer)
                 .WithOne(c => c.Inhabitant)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasForeignKey<Customer>(c => c.InhabitantId);
+
+            modelBuilder.Entity<Inhabitant>()
+                .Property(i => i.CheckOut)
+                .HasDefaultValue(null);
         }
+
+
     }
 }
