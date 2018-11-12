@@ -9,6 +9,18 @@
 
 <body>
     <h1>Hostel Managment</h1>
+    <button onClick="onClickClear()">Clear</button>
+    <input id="idInput" type="number" placeholder="id записи" onInput="onTyping()" onChange="onTyping()" />
+    <input id="numberInput" type="number" placeholder="номер" onInput="onTyping()" onChange="onTyping()" />
+    <input id="capacityInput" type="number" placeholder="вместительность" onInput="onTyping()" onChange="onTyping()" />
+    <input id="categoryInput" type="text" placeholder="категория" onInput="onTyping()" onChange="onTyping()" />
+    <select id="occupiedInput" onInput="onTyping()" onChange="onTyping()">
+        <option value="true">занят</option>
+        <option value="false">не занят</option>
+        <option value="none" selected>неважно</option>
+    </select>
+
+
     <div id="content">content</div>
 </body>
 

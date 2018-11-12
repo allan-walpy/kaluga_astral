@@ -1,12 +1,18 @@
+
+
+
+
 /* thnx to https://github.com/taniarascia/sandbox; */
 var request = new XMLHttpRequest();
 
 var data;
+var currentData;
 
 request.open('Get', 'https://localhost:5001/room/', true);
 
 request.onload = function () {
     data = JSON.parse(this.response);
+    currentData = data;
 
     showTable();
 };
@@ -14,9 +20,9 @@ request.onload = function () {
 request.send();
 console.log("request sent");
 
-function showTable() {
+function showTable(newData) {
     console.log("drawing new table");
-    var content = makeRoomTable(data);
+    var content = makeRoomTable(newData ? newData : data);
     document.getElementById("content").innerHTML = content;
 }
 
@@ -38,7 +44,7 @@ function makeRoomTable(data, isShowId = true) {
         output += cell(room.number)
             + cell(room.capacity)
             + cell(toCategory(room.category))
-            + cell(room.inhabitantId === null);
+            + cell(room.inhabitantId !== null);
         output += "</tr>"
     });
     output += "</table>";
@@ -124,4 +130,64 @@ function sortByOccupied() {
             return -1;
         return 0;
     });
+}
+
+function selectId() {
+    var select = document.getElementById("idInput").value.toString();
+    if (select === "")
+        return;
+    currentData = currentData.filter((r) => r.id.toString().includes(select));
+}
+
+function selectNumber() {
+    var select = document.getElementById("numberInput").value.toString();
+    if (select === "")
+        return;
+    currentData = currentData.filter((r) => r.number.toString().includes(select));
+}
+
+function selectCapacity() {
+    var select = document.getElementById("capacityInput").value.toString();
+    if (select === "")
+        return;
+    currentData = currentData.filter((r) => r.capacity.toString() === select);
+}
+
+function selectCategory() {
+    var select = document.getElementById("categoryInput").value.toString();
+    if (select === "")
+        return;
+    currentData = currentData.filter((r) => toCategory(r.category).toString().includes(select));
+}
+
+function selectOccupied() {
+    var e = document.getElementById("occupiedInput");
+    var select = e.options[e.selectedIndex].value;
+    console.log('-------', select);
+    if (select == "false")
+        currentData = currentData.filter((r) => r.inhabitantId == null);
+    if (select == "true")
+        currentData = currentData.filter((r) => r.inhabitantId != null);
+}
+
+function recalculate() {
+    selectId();
+    selectNumber();
+    selectCapacity();
+    selectCategory();
+    selectOccupied();
+
+    showTable(currentData);
+    currentData = data;
+}
+
+function onTyping() {
+    recalculate();
+}
+
+function onClickClear() {
+    console.log("all clear");
+    document.getElementById("numberInput").value = "";
+    currentData = data;
+    showTable();
 }
