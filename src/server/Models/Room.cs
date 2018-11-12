@@ -5,9 +5,12 @@ namespace Hostel.Server.Models
 {
 
     [Table("Rooms")]
-    public class Room
+    public class Room : IRecord
     {
         [Key]
+        public int Id { get; set; }
+
+        [Required]
         public int Number { get; set; }
 
         public int Capacity { get; set; }

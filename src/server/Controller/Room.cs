@@ -28,7 +28,7 @@ namespace Hostel.Server.Controllers
             Room result;
             using (var db = this.DbService.Context)
             {
-                result = db.Rooms.Where(c => c.Number == id).FirstOrDefault();
+                result = db.Rooms.Where(c => c.Id == id).FirstOrDefault();
             }
             return result;
         }
@@ -121,7 +121,7 @@ namespace Hostel.Server.Controllers
                 return new EmptyResult();
             }
 
-            newData.Number = id;
+            newData.Id = id;
             // TODO: set InhabitantId if none present;
 
             using (var db = this.DbService.Context)

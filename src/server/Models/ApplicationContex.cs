@@ -43,6 +43,9 @@ namespace Hostel.Server.Models
         private void ConfigureRooms(ref ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Room>()
+                 .HasIndex(r => r.Number).IsUnique();
+
+            modelBuilder.Entity<Room>()
                 .Property(r => r.Capacity)
                 .HasDefaultValue(1);
 

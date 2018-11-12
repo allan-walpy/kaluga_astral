@@ -6,7 +6,7 @@ namespace Hostel.Server.Models
 {
 
     [Table("Inhabitants")]
-    public class Inhabitant
+    public class Inhabitant : IRecord
     {
         [Key]
         public int Id { get; set; }

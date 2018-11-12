@@ -5,7 +5,7 @@ namespace Hostel.Server.Models
 {
 
     [Table("Customers")]
-    public class Customer
+    public class Customer : IRecord
     {
 
         [Key]
