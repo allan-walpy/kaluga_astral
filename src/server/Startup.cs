@@ -48,6 +48,8 @@ namespace Hostel.Server
             app.UseHttpsRedirection();
 
             app.UseMvc();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }
