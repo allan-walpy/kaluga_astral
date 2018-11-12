@@ -21,7 +21,7 @@ namespace Hostel.Server.Models
 
         public Inhabitant Inhabitant { get; set; }
 
-        public int InhabitantId { get; set; }
+        public int? InhabitantId { get; set; }
 
     }
 
