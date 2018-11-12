@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Hostel.Server.Middleware;
-
 namespace Hostel.Server
 {
     public class Startup
@@ -48,7 +46,11 @@ namespace Hostel.Server
 
             app.UseHttpsRedirection();
 
-            app.UseMvc();
+            app.UseMvc(routes => {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action}/{id?}");
+            });
         }
     }
 }

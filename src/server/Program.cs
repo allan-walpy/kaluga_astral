@@ -30,8 +30,8 @@ namespace Hostel.Server
         {
             var builder = new ConfigurationBuilder();
             builder.SetBasePath(Directory.GetCurrentDirectory());
-            // TODO: magisk stringk; add to args and add to constants;
 
+            // TODO: magisk stringk; add to args and add to constants;
             builder.AddJsonFile("appsettings.json");
 
             Program.Config = builder.Build();

@@ -8,24 +8,21 @@ namespace Hostel.Server.Services
     public class DatabaseService
     {
 
-        private String _connection;
+        public ApplicationContext Context { get; }
 
-        public ApplicationContext Context
+        public DatabaseService(String connectionString)
         {
-            get
-            {
-                var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-
-                var options = optionsBuilder
-                    .UseMySQL(this._connection)
-                    .Options;
-                return new ApplicationContext(options);
-            }
+            this.Context = this.ConnectToDatabase(connectionString);
         }
 
-        public DatabaseService(String connection)
+        private ApplicationContext ConnectToDatabase(string connectionString)
         {
-            this._connection = connection;
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+
+            var options = optionsBuilder
+                .UseMySQL(connectionString)
+                .Options;
+            return new ApplicationContext(options);
         }
 
     }
