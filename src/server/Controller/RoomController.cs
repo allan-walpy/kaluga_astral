@@ -108,8 +108,8 @@ namespace Hostel.Server.Controllers
             return new JsonResult(result);
         }
 
-        [HttpPost("update/{id}")]
-        [HttpPatch("{id}")]
+        [HttpPost("update/{id:int}")]
+        [HttpPatch("{id:int}")]
         public IActionResult RequestUpdate(int id)
         {
 #if DEBUG

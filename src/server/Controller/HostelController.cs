@@ -125,7 +125,7 @@ namespace Hostel.Server.Controllers
                 db.SaveChanges();
             }
 
-            HttpContext.Response.StatusCode = StatusCodes.Status200OK;
+            HttpContext.Response.StatusCode = StatusCodes.Status201Created;
             return new JsonResult(this.PrepareToJson(this.GetById(inhabitant.Id)));
         }
 
