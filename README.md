@@ -263,6 +263,7 @@
 #### check in
 
 `Post hostel/checkin/{roomId:int}/{customerId:int}`
+
 `Post hostel/{roomId:int}/{customerId:int}`
 
 Тело запроса желательно пустое;
@@ -278,6 +279,7 @@
 #### check out
 
 `Post hostel/checkout/{id:int}`
+
 `Delete hostel/{id:int}`
 
 Тело запроса желательно пустое;
@@ -296,6 +298,7 @@
 #### get
 
 `Post hostel/get/{id:int}`
+
 `Get hostel/{id:int}`
 
 Тело запроса желательно пустое;
@@ -311,6 +314,7 @@
 #### get all
 
 `Post hostel/get/`
+
 `Get hostel/`
 
 Тела запроса желательно оставить пустым;
