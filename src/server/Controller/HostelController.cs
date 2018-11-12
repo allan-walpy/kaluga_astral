@@ -89,15 +89,14 @@ namespace Hostel.Server.Controllers
             };
         }
 
-        [HttpGet("checkin/{roomId:int}/{customerId:int}")]
         [HttpPost("checkin/{roomId:int}/{customerId:int}")]
         [HttpPost("{roomId:int}/{customerId:int}")]
         public IActionResult RequestChechIn(int roomId, int customerId)
         {
+
             if (!this.CanBeInhabited(roomId, customerId))
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
-                return new EmptyResult();
+                return new ConflictResult();
             }
 
             Inhabitant inhabitant;
@@ -130,23 +129,6 @@ namespace Hostel.Server.Controllers
             return new JsonResult(this.PrepareToJson(this.GetById(inhabitant.Id)));
         }
 
-        [HttpPost("get/{id:int}")]
-        [HttpGet("{id:int}")]
-        public IActionResult RequestGet(int id)
-        {
-            Inhabitant inhabitant = this.GetById(id);
-
-            if (inhabitant == null)
-            {
-                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                return new EmptyResult();
-            }
-
-            HttpContext.Response.StatusCode = StatusCodes.Status200OK;
-            return new JsonResult(this.PrepareToJson(inhabitant));
-        }
-
-        [HttpGet("checkout/{id:int}")]
         [HttpPost("checkout/{id:int}")]
         [HttpDelete("{id:int}")]
         public IActionResult RequestChechOut(int id)
@@ -155,8 +137,7 @@ namespace Hostel.Server.Controllers
 
             if (inhabitant == null)
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                return new EmptyResult();
+                return new NotFoundResult();
             }
 
             TimeSpan usingTime = DateTime.Now - inhabitant.CheckIn;
@@ -167,8 +148,6 @@ namespace Hostel.Server.Controllers
 
             using (var db = this.dbService.Context)
             {
-
-
                 db.Inhabitants.Remove(inhabitant);
                 db.SaveChanges();
             }
@@ -180,14 +159,29 @@ namespace Hostel.Server.Controllers
             });
         }
 
-        [HttpGet("get/")]
-        [HttpGet("get/all")]
+        [HttpPost("get/{id:int}")]
+        [HttpGet("{id:int}")]
+        public IActionResult RequestGet(int id)
+        {
+            Inhabitant inhabitant = this.GetById(id);
+
+            if (inhabitant == null)
+            {
+                return new NotFoundResult();
+            }
+
+            HttpContext.Response.StatusCode = StatusCodes.Status200OK;
+            return new JsonResult(this.PrepareToJson(inhabitant));
+        }
+
+
         [HttpPost("get/")]
-        [HttpPost("get/all")]
+        [HttpGet("")]
         public IActionResult RequestGetAll()
         {
             var result = this.dbService.Context.Inhabitants
                 .Select(this.PrepareToJson).ToList();
+
             HttpContext.Response.StatusCode = StatusCodes.Status200OK;
             return new JsonResult(result);
         }

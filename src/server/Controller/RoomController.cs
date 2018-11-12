@@ -33,6 +33,11 @@ namespace Hostel.Server.Controllers
             return result;
         }
 
+        private bool IsNotUnique(Room room)
+        {
+            return this.DbService.Context.Rooms.Any(r => r.Number == room.Number);
+        }
+
         [HttpPost("add/")]
         [HttpPost("")]
         public IActionResult RequestAdd()
@@ -42,11 +47,13 @@ namespace Hostel.Server.Controllers
 #endif
 
             Room room = JsonConvert.DeserializeObject<Room>(HttpContext.Request.Body.Stringify());
-
             if (room == null)
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return new EmptyResult();
+                return new BadRequestResult();
+            }
+            if (this.IsNotUnique(room))
+            {
+                return new ConflictResult();
             }
 
             using (var db = this.DbService.Context)
@@ -54,11 +61,11 @@ namespace Hostel.Server.Controllers
                 db.Rooms.Add(room);
                 db.SaveChanges();
             }
-            HttpContext.Response.StatusCode = StatusCodes.Status200OK;
+
+            HttpContext.Response.StatusCode = StatusCodes.Status201Created;
             return new JsonResult(room);
         }
 
-        [HttpGet("remove/{id:int}")]
         [HttpPost("remove/{id:int}")]
         [HttpDelete("{id:int}")]
         public IActionResult RequestRemove(int id)
@@ -71,8 +78,7 @@ namespace Hostel.Server.Controllers
 
             if (room == null)
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                return new EmptyResult();
+                return new NotFoundResult();
             }
 
             using (var db = this.DbService.Context)
@@ -81,12 +87,11 @@ namespace Hostel.Server.Controllers
                 db.SaveChanges();
             }
 
-            HttpContext.Response.StatusCode = StatusCodes.Status200OK;
-            return new EmptyResult();
+            return new OkResult();
         }
 
-        [HttpGet("{id:int}")]
         [HttpPost("get/{id:int}")]
+        [HttpGet("{id:int}")]
         public IActionResult RequestGet(int id)
         {
 #if DEBUG
@@ -94,12 +99,9 @@ namespace Hostel.Server.Controllers
 #endif
 
             Room result = this.GetById(id);
-
             if (result == null)
             {
-                // TODO: make seperate class/method with 404 response;
-                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                return new EmptyResult();
+                return new NotFoundResult();
             }
 
             HttpContext.Response.StatusCode = StatusCodes.Status200OK;
@@ -117,12 +119,10 @@ namespace Hostel.Server.Controllers
 
             if (newData == null)
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return new EmptyResult();
+                return new BadRequestResult();
             }
 
             newData.Id = id;
-            // TODO: set InhabitantId if none present;
 
             using (var db = this.DbService.Context)
             {
@@ -134,11 +134,12 @@ namespace Hostel.Server.Controllers
             return new JsonResult(this.GetById(id));
         }
 
+        [HttpPost("all/")]
         [HttpGet("")]
-        [HttpGet("all/")]
         public IActionResult RequestGetAll()
         {
             List<Room> result = this.DbService.Context.Rooms.ToList();
+
             HttpContext.Response.StatusCode = StatusCodes.Status200OK;
             return new JsonResult(result);
         }

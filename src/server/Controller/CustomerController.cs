@@ -33,6 +33,14 @@ namespace Hostel.Server.Controllers
             return result;
         }
 
+        private bool IsNotUnique(Customer customer)
+        {
+            return this.DbService.Context.Customers.Any(c =>
+                (c.FirstName == customer.FirstName)
+                && (c.SecondName == customer.SecondName)
+                && (c.ThirdName == customer.ThirdName));
+        }
+
         [HttpPost("add/")]
         [HttpPost("")]
         public IActionResult RequestAdd()
@@ -45,8 +53,12 @@ namespace Hostel.Server.Controllers
 
             if (customer == null)
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                return new EmptyResult();
+                return new BadRequestResult();
+            }
+
+            if (this.IsNotUnique(customer))
+            {
+                return new ConflictResult();
             }
 
             using (var db = this.DbService.Context)
@@ -54,11 +66,11 @@ namespace Hostel.Server.Controllers
                 db.Customers.Add(customer);
                 db.SaveChanges();
             }
-            HttpContext.Response.StatusCode = StatusCodes.Status200OK;
+
+            HttpContext.Response.StatusCode = StatusCodes.Status201Created;
             return new JsonResult(customer);
         }
 
-        [HttpGet("remove/{id:int}")]
         [HttpPost("remove/{id:int}")]
         [HttpDelete("{id:int}")]
         public IActionResult RequestRemove(int id)
@@ -71,8 +83,7 @@ namespace Hostel.Server.Controllers
 
             if (customer == null)
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                return new EmptyResult();
+                return new NotFoundResult();
             }
 
             using (var db = this.DbService.Context)
@@ -81,12 +92,11 @@ namespace Hostel.Server.Controllers
                 db.SaveChanges();
             }
 
-            HttpContext.Response.StatusCode = StatusCodes.Status200OK;
-            return new EmptyResult();
+            return new OkResult();
         }
 
-        [HttpGet("{id:int}")]
         [HttpPost("get/{id:int}")]
+        [HttpGet("{id:int}")]
         public IActionResult RequestGet(int id)
         {
 #if DEBUG
@@ -97,17 +107,15 @@ namespace Hostel.Server.Controllers
 
             if (result == null)
             {
-                // TODO: make seperate class/method with 404 response;
-                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                return new EmptyResult();
+                return new NotFoundResult();
             }
 
             HttpContext.Response.StatusCode = StatusCodes.Status200OK;
             return new JsonResult(result);
         }
 
-        [HttpPost("update/{id}")]
-        [HttpPatch("{id}")]
+        [HttpPost("update/{id:int}")]
+        [HttpPatch("{id:int}")]
         public IActionResult RequestUpdate(int id)
         {
 #if DEBUG
@@ -134,8 +142,8 @@ namespace Hostel.Server.Controllers
             return new JsonResult(this.GetById(id));
         }
 
+        [HttpPost("all/")]
         [HttpGet("")]
-        [HttpGet("all/")]
         public IActionResult RequestGetAll()
         {
             List<Customer> result = this.DbService.Context.Customers.ToList();
