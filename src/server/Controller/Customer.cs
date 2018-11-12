@@ -28,6 +28,7 @@ namespace Hostel.Server.Controllers
             Customer result;
             using (var db = this.DbService.Context)
             {
+                // FIXME: First of empty result => exception;
                 result = this.DbService.Context.Customers.Where(c => c.Id == id).First();
             }
             return result;
@@ -38,7 +39,7 @@ namespace Hostel.Server.Controllers
             Customer result;
             using (var db = this.DbService.Context)
             {
-                result = this.DbService.Context.Customers.Where(c =>
+                result = db.Customers.Where(c =>
                     c.FirstName == customer.FirstName
                     && c.SecondName == customer.SecondName
                     && c.ThirdName == customer.ThirdName).First();
@@ -54,10 +55,11 @@ namespace Hostel.Server.Controllers
         }
 
         [HttpPost("add/")]
+        [HttpPost("")]
         public IActionResult RequestAdd()
         {
 #if DEBUG
-            Console.WriteLine("request:customer/add");
+            Console.WriteLine("request:customer/add/");
 #endif
 
             Customer customer = JsonConvert.DeserializeObject<Customer>(HttpContext.Request.Body.Stringify());
@@ -79,6 +81,7 @@ namespace Hostel.Server.Controllers
 
         [HttpGet("remove/{id:int}")]
         [HttpPost("remove/{id:int}")]
+        [HttpDelete("{id:int}")]
         public IActionResult RequestRemove(int id)
         {
 #if DEBUG
@@ -103,7 +106,7 @@ namespace Hostel.Server.Controllers
             return new EmptyResult();
         }
 
-        [HttpGet("get/{id:int}")]
+        [HttpGet("{id:int}")]
         [HttpPost("get/{id:int}")]
         public IActionResult RequestGet(int id)
         {
@@ -124,32 +127,38 @@ namespace Hostel.Server.Controllers
             return new JsonResult(result);
         }
 
-        [HttpGet("find/")]
-        [HttpPost("find/")]
-        public IActionResult RequestFind()
+        [HttpPost("update/{id}")]
+        [HttpPatch("{id}")]
+        public IActionResult RequestUpdate(int id)
         {
 #if DEBUG
-            Console.WriteLine("request:customer/find");
+            Console.WriteLine("request:customer/update/{id:int}");
 #endif
+            Customer newData = JsonConvert.DeserializeObject<Customer>(HttpContext.Request.Body.Stringify());
 
-            Customer customer = JsonConvert.DeserializeObject<Customer>(HttpContext.Request.Body.Stringify());
-
-            if (this.IsCustomerNull(customer))
+            if (newData == null)
             {
                 HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return new EmptyResult();
             }
 
-            Customer result = this.GetByCustomer(customer);
+            newData.Id = id;
+            // TODO: set InhabitantId if none present;
 
-            // TODO: submethod - return customer?;
-            if (result == null)
+            using (var db = this.DbService.Context)
             {
-                // TODO: make seperate class/method with 404 response;
-                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                return new EmptyResult();
+                db.Customers.Update(newData);
+                db.SaveChanges();
             }
 
+            HttpContext.Response.StatusCode = StatusCodes.Status200OK;
+            return new JsonResult(this.GetById(id));
+        }
+
+        [HttpGet("")]
+        public IActionResult RequestGetAll()
+        {
+            List<Customer> result = this.DbService.Context.Customers.ToList();
             HttpContext.Response.StatusCode = StatusCodes.Status200OK;
             return new JsonResult(result);
         }
